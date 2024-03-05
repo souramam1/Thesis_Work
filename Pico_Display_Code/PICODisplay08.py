@@ -6,7 +6,7 @@ from pimoroni import Button
 from picographics import PicoGraphics, DISPLAY_PICO_DISPLAY, PEN_P4
 import random
 import machine
-
+from machine import Pin
 
 # Configure PICO Display, create variables needed for displaying bar graph
 # Since only using a few colors, we can use a 4 bit/16 colour palette.
@@ -28,8 +28,17 @@ RED = display.create_pen(255,000,000)
 GREEN = display.create_pen(000,255,000)
 
 delay = 3
+
+
 #--------------------------------NON DISPLAY FUNCTIon -----------------------------------------
 potentiometer = machine.ADC(26)
+car_1 = Pin(0, Pin.IN, Pin.PULL_DOWN) #I.E GPIO 0 
+car_2 = Pin(1, Pin.IN, Pin.PULL_DOWN)
+car_3 = Pin(2, Pin.IN, Pin.PULL_DOWN)
+car_4 = Pin(3, Pin.IN, Pin.PULL_DOWN)
+car_5 = Pin(4, Pin.IN, Pin.PULL_DOWN)
+cars = [car_1,car_2,car_3, car_4,car_5]
+
 
 #-------------------------------- FUNCTIONS ---------------------------------------------------
 
@@ -87,29 +96,43 @@ def Animate_Graph(bar,level):
 def show_level(bar,val):
     seg_num = 20
     if(bar==1):
-        a = 11
+        a = 15+(1*val) #i.e if 2 cars = 17kwH
     else:
         a = round((val-0.3)/2*20)
     Animate_Graph(bar,a)
     print(a)
     
 def check_cars():
+    car_sum = 0
+    for i in range(5):
+        if (cars[i].value()):
+            sum += 1
+        else:
+            pass
+    return sum
+        
+
+def read_solar():
+    curr_val = potentiometer.read_u16()
+    curr_volt = 3.3*(curr_val/65535)
+    return curr_volt
+    
+    
     
     
 #------------------------- MAIN CODE --------------------------------
 
 while True:
-    curr_val = potentiometer.read_u16()
-    curr_volt = 3.3*(curr_val/65535)
-    print("CURR VOLT")
-    print(curr_volt)
-    show_level(1,0)
-    show_level(2,curr_volt)
+    print(read_sol())
+    print(check_cars())
+    show_level(1,check_cars()) #check cars will be a value from 0 to 5
+    show_level(2,read_solar())
     time.sleep(delay)
     clear()
     
     
     
+
 
 
 
