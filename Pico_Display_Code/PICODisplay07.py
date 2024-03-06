@@ -93,7 +93,7 @@ def show_level(bar,val):
     Animate_Graph(bar,a)
     print(a)
     
-def check_cars():
+
     
     
 #------------------------- MAIN CODE --------------------------------

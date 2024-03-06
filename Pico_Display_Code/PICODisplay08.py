@@ -106,10 +106,10 @@ def check_cars():
     car_sum = 0
     for i in range(5):
         if (cars[i].value()):
-            sum += 1
+            car_sum += 1
         else:
             pass
-    return sum
+    return car_sum
         
 
 def read_solar():
@@ -123,7 +123,7 @@ def read_solar():
 #------------------------- MAIN CODE --------------------------------
 
 while True:
-    print(read_sol())
+    print(read_solar())
     print(check_cars())
     show_level(1,check_cars()) #check cars will be a value from 0 to 5
     show_level(2,read_solar())
