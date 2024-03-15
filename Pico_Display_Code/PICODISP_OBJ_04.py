@@ -120,12 +120,15 @@ class Display:
         self.animate_graph(bar)
         print(a)
             
+    def basic_disp_check(self):
+        self.clear()
+        self.show_level(1,11)
+        self.show_level(2,1)
+        self.clear()
+        self.show_level(3,2)
+        
     
         
 if __name__ == "__main__":
     my_disp = Display()
-    my_disp.clear()
-    my_disp.show_level(1,11)                   
-    my_disp.show_level(2,1)
-    my_disp.clear()
-    my_disp.show_level(3,2)
+    my_disp.basic_disp_check()
