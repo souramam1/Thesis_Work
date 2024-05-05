@@ -5,11 +5,12 @@ import time
 from machine import Pin
 
 class Slider:
-    def __init__(self):
-        self.pins = [Pin(i, Pin.IN, Pin.PULL_DOWN) for i in range(7)]
+    def __init__(self,lower,upper):
+        self.pins = [Pin(i, Pin.IN, Pin.PULL_DOWN) for i in range(lower,upper)]
 
     def check_status(self):
-        high_pins = [i for i, pin in enumerate(self.pins) if pin.value() == 1]
+        print("CHECK STATUS")
+        high_pins = [i for i, pin in enumerate(self.pins) if pin.value() == 0]
         if high_pins:
             print("High pins:", high_pins)
         else:
