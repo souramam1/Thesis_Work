@@ -34,7 +34,7 @@ class Model:
         current_time = utime.ticks_ms()
         if current_time - self.last_interrupt_time > self.debounce_delay:
             print(f"BUTTON 0 PRESSED")
-            if self.status < 6:
+            if self.status < 7:
                 self.status += 1
             else:
                 self.status = 0
@@ -75,18 +75,19 @@ class Model:
             
             
     def l_with_solar(self):
+        # aim: the amount of green vs red in the building represents IN THAT TIME PERIOD what fraction of the
+        # consumed energy is coming from the sun and what from the grid
         if self.status == 2:
-            self.slider.consumption_score()
-            self.slider.sun_score()
-            chunk = sum(self.slider.sun_strength.values())
-            proportion_green = 0.28/chunk*self.slider.sli_sun_score
+            relative_prosump = self.slider.max_prosump - self.slider.curr_prosum
+            fractional_prosump = relative_prosump/self.slider.prosumption_range
+            proportion_green = fractional_prosump
             self.neo.solar_light([8],proportion_green)
-            prosumption_value =  self.slider.sli_consum_score - self.slider.sli_sun_score
             if prosumption_value < 0:
                 prosumption_value = 0
             elif prosumption_value > 10:
                 prosumption_value = 10
             else:
+                #This means that if prosumption is negative we do not show a trace --> because that would mean we are depending not on the grid
                 self.neo.show_trace([4,0,int(prosumption_value),0,3])
             
             
@@ -123,20 +124,21 @@ class Model:
             trace_list = []
             trace_1 = []
             trace_2 = []
-            self.slider.consumption_score()
-            self.slider.sun_score()
-            prosumption_value =  self.slider.sli_consum_score - self.slider.sli_sun_score
-            if prosumption_value < 0:
-                trace_1 = [1,3,int(abs(prosumption_value)),1,3]
-                trace_2 = [2,3,int(abs(prosumption_value)),0,3]
+            
+            sefl.slider.update_prosump()
+            if self.slider.curr_prosum < 0:
+                trace_1 = [1,3,int(10/abs(prosumption_value)),1,3]
+                trace_2 = [2,3,int(10/abs(prosumption_value)),0,3]
                 trace_list.append(trace_1)
                 trace_list.append(trace_2)
-            elif prosumption_value > 10:
+            elif self.slider.curr_prosum > 10:
                 prosumption_value = 10
-            chunk = sum(self.slider.sun_strength.values())
-            proportion_green = 0.28/chunk*self.slider.sli_sun_score
+            relative_prosump = self.slider.max_prosump - self.slider.curr_prosum
+            fractional_prosump = relative_prosump/self.slider.prosumption_range
+            proportion_green = fractional_prosump
             self.neo.solar_light([8],proportion_green)
             self.neo.iter_traces(trace_list)
+            self.neo.solar_light([4,6], 0.1)
             self.neo.consumption_flow(0,int(prosumption_value),3)
             
             
@@ -160,10 +162,11 @@ class Model:
 
         
         
-    def reset_check(self):
+    def reset(self):
         if self.status == 0:
-            # all lights off
-            pass
+            self.strip.fill((0,0,0))
+                
+            
 
         
         

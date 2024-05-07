@@ -10,12 +10,33 @@ class Slider:
     def __init__(self,lower,upper):
         self.pins = [Pin(i, Pin.IN, Pin.PULL_DOWN) for i in range(lower,upper)]
         self.high_pins = []
-        self.consum_score_table = {0:1,1:6,2:5,3:2,4:5,5:10,6:1}
-        self.sun_strength = {0:0,1:2,2:5,3:10,4:5,5:2,6:0}
+        #CHANGED
+        self.consum_score_table = [1,6,5,2,5,10,1]
+        #self.consum_score_table = {0:1,1:6,2:5,3:2,4:5,5:10,6:1}
+        self.sun_strength = [0,2,5,10,5,2,0]
+        #self.sun_strength = {0:0,1:2,2:5,3:10,4:5,5:2,6:0}
+        self.prosumption_table = [self.consum_score_table[i]-self.sun_strength[i] for self.consum_score_table[i],self.sun_strength[i] in zip(self.consum_score_table,self.sun_strength)]
+        self.lowest_prosump = min(self.prosumption_table)
+        self.max_prosump = max(self.prosumption_table)
+        self.prosumption_range = self.max_prosump - self.lowest_prosump
+        self.curr_prosump = 0
+        
         self.sli_consum_score = 0
         self.sli_sun_score = 0
         
 
+    def update_prosump(self):
+        self.check_status()
+        for pin in self.high_pins:
+            tally += self.prosumption_table[pin]
+        if len(self.high_pins)== 0:
+            pass
+        else:
+            self.curr_prosump = int(tally/len(self.high_pin))
+            print(f"prosumption score is {self.curr_prosump}")
+            
+        
+    
     def check_status(self):
         self.high_pins = [i for i, pin in enumerate(self.pins) if pin.value() == 0]
         if self.high_pins:
