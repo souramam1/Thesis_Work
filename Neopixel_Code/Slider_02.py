@@ -11,7 +11,7 @@ class Slider:
         self.pins = [Pin(i, Pin.IN, Pin.PULL_DOWN) for i in range(lower,upper)]
         self.high_pins = []
         #CHANGED
-        self.consum_score_table = [1,6,5,2,5,10,1]
+        self.consum_score_table = [1,6,5,2,6,10,1]
         #self.consum_score_table = {0:1,1:6,2:5,3:2,4:5,5:10,6:1}
         self.sun_strength = [0,2,5,10,5,2,0]
         self.prosumption_table = [None]*len(self.consum_score_table)

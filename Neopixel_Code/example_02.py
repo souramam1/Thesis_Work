@@ -28,11 +28,11 @@ class NeoPixel:
 
 
 if __name__ == "__main__":
-    my_pix = NeoPixel(16,22)
+    my_pix = NeoPixel(204,22)
 
 while True:
     
-    for i in range(16):
+    for i in range(204):
         my_pix.strip.set_pixel(i, my_pix.red)
 
     print(my_pix.numpix)

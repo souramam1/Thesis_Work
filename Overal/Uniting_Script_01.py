@@ -68,16 +68,21 @@ class Model:
 
 
     def l_consuming(self):
+        self.neo.strip.fill(self.neo.blank)
         if self.status == 1:
+            self.neo.strip.fill(self.neo.blank)
             self.slider.consumption_score()
             self.neo.consumption_buildings([8])
             self.neo.show_trace([4,0,self.slider.sli_consum_score,0,3])
             
             
     def l_with_solar(self):
+        
         # aim: the amount of green vs red in the building represents IN THAT TIME PERIOD what fraction of the
         # consumed energy is coming from the sun and what from the grid
         if self.status == 2:
+            self.neo.strip.fill(self.neo.blank)
+            self.slider.update_prosump()
             relative_prosump = self.slider.max_prosump - self.slider.curr_prosum
             fractional_prosump = relative_prosump/self.slider.prosumption_range
             proportion_green = fractional_prosump
@@ -100,6 +105,7 @@ class Model:
             
     def show_consumption_mode_all(self):
         if self.status == 3:
+            self.neo.strip.fill(self.neo.blank)
             self.slider.consumption_score()
             print(f"slider consumption score is : {self.slider.sli_consum_score}")
             self.neo.consumption_buildings([4,6,8])
@@ -120,6 +126,7 @@ class Model:
 #         tr_green_frac = trace_obj[5] --> this will be the solar score from the slider object from the adc object within
 #         tr_bd_ix = trace_obj[6] --> this will also be from the adc object within the slider object
         if self.status == 4:
+            self.neo.strip.fill(self.neo.blank)
             #program this
             trace_list = []
             trace_1 = []
@@ -145,18 +152,21 @@ class Model:
         
     def all_solar(self):
         if self.status == 5:
+            self.neo.strip.fill(self.neo.blank)
             # program this
             pass
 
     
     def prosumption_slider(self):
         if self.status == 6:
+            self.neo.strip.fill(self.neo.blank)
             # program this
             pass
 
         
     def activities(self):
         if self.status == 7:
+            self.neo.strip.fill(self.neo.blank)
             #program this
             pass
 
@@ -164,8 +174,15 @@ class Model:
         
     def reset(self):
         if self.status == 0:
-            self.strip.fill((0,0,0))
+            print("in status is 0")
+#             for i in range(204):
+#                 print("in for loop")
+#                 #self.neo.strip.set_pixel(i, self.neo.blank)
+            self.neo.strip.fill(self.neo.blank)
+            self.neo.strip.show()
+            
                 
+            
             
 
         
@@ -191,7 +208,7 @@ class Model:
         hammarby.l_sharing()
         hammarby.all_solar()
         hammarby.prosumption_slider()
-        hammarby.reset_check()
+        hammarby.reset()
         
         
         
@@ -213,6 +230,8 @@ if __name__ == "__main__":
 
     while True:
         hammarby.main()
+        #print(hammarby.status)
+
 
     
         
