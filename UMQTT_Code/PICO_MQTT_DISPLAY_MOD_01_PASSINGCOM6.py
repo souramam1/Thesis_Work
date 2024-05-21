@@ -26,8 +26,8 @@ class Model:
             client_id=b"maia_com7",
             server="e46309c1b7584d2387038d16668324ea.s1.eu.hivemq.cloud",
             port=0,
-            user="souramam1",
-            password="Cia25yow"                             
+            user="",
+            password=""                             
         )
         self.mqtatoe.connect()
         self.mqtatoe.subscribe('Sent over COM 7', self.my_callback)

@@ -77,8 +77,8 @@ def main():
         client_id=b"maia_com6",
         server="e46309c1b7584d2387038d16668324ea.s1.eu.hivemq.cloud",
         port=0,
-        user="souramam1",
-        password="Cia25yow"
+        user="",
+        password=""
     )
     mqtt_connector.connect()
     mqtt_connector.subscribe('Sent over COM 7', my_callback)
